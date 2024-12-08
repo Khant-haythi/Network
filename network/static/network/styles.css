@@ -1,0 +1,22 @@
+/* network/styles.css */
+
+
+
+.btn-custom-outline:hover {
+    background-color: #2EB872 !important; /* Background color on hover */
+    color: white !important; /* Text color on hover */
+}
+
+.medium  {
+    color: #A3DE83;  /* Set the desired color */
+}
+
+.btn-primary {
+    background-color: #A3DE83 !important; /* Change this to your desired color */
+    color: white !important; /* Text color */
+}
+
+.btn-outline-primary {
+    border-color:#b9bfbc !important ; /* Change this to your desired border color */
+     /* Change this to your desired text color */
+}
