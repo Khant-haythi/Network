@@ -16,7 +16,12 @@
     color: white !important; /* Text color */
 }
 
-.btn-outline-primary {
-    border-color:#b9bfbc !important ; /* Change this to your desired border color */
-     /* Change this to your desired text color */
+.btn-outline-myprimary {
+    border-color:#21382d !important ; 
+    color: #13af63 !important; /* Text color */
+    background-color: transparent ;
+}
+
+.space-between-buttons {
+    margin-right: 50px;
 }

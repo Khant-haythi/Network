@@ -1,12 +1,13 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-
-    <h2>Login</h2>
+<div class="container mt-4">
+    <h3 class="medium"><strong>Login</strong></h3>
 
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
+
 
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
@@ -19,6 +20,7 @@
         <input class="btn btn-primary" type="submit" value="Login">
     </form>
 
+<br>
     Don't have an account? <a href="{% url 'register' %}">Register here.</a>
-
+</div>
 {% endblock %}

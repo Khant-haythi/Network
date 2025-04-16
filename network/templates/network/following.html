@@ -14,20 +14,10 @@
         </div>
     {% endif %}
 
-    <div class="card">
-    <h5 class="card-header medium" >New Post</h5>
     
-    
-    <form method="POST" action="{% url 'create_post' %}">
-        {% csrf_token %}
-        <div class="card-body">
-            <textarea class="form-control" id="postContent" placeholder="What's on your mind?" name="content" rows="4" required></textarea>
-        <br>
-        <button type="submit" class="btn btn-primary btn-outline-primary">Post</button>
-        </div>
-    </form>
-    </div>
-
+    <hr>
+    <!-- Heading -->
+    <h3>Posts from People You Follow</h3>
     <hr>
 
     <div class="container">

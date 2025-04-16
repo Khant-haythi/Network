@@ -3,6 +3,15 @@
 {% block body %}
 <br>
 <div class="container justify-content-center align-items-center" style="width: 25rem;">
+    {% if messages %}
+        <div class="mt-3">
+            {% for message in messages %}
+                <div class="alert alert-success text-center" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class="mb-3">
         <h3 class="container text-center" style="color:#1d24a0">New Post</h3>
         <hr>
