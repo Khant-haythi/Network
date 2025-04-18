@@ -5,13 +5,11 @@ from django.shortcuts import get_object_or_404, render,redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import User,Post,Follow
 
 
-def index(request):
-    posts = Post.objects.all()
-    return render(request, "network/index.html",{'posts': posts})
 
 def newpost(request):
     return render(request,"network/post.html")
@@ -27,7 +25,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("all_posts"))
         else:
             return render(request, "network/login.html", {
                 "message": "Invalid username and/or password."
@@ -38,7 +36,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("all_posts"))
 
 
 def register(request):
@@ -63,12 +61,17 @@ def register(request):
                 "message": "Username already taken."
             })
         login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("all_posts"))
     else:
         return render(request, "network/register.html")
 
 def all_posts(request):
-    posts = Post.objects.all().order_by('created_date')  # Get all posts, ordered by most recent
+    post_list = Post.objects.all().order_by('-created_date')  # Get all posts, ordered by most recent
+    paginator = Paginator(post_list, 10)  # 10 posts per page
+
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)  # `posts` is now a Page object
+
     return render(request, 'network/index.html', {'posts': posts})
 
 def create_post(request):
@@ -79,7 +82,7 @@ def create_post(request):
         posting = Post(owner=request.user,content=content)
         posting.save()
         messages.success(request, "Post successfully created!")
-        return redirect('index')
+        return redirect('all_posts')
     return render(request, 'network/post.html')  
 
 def profile(request, username):
@@ -129,7 +132,7 @@ def follow_unfollow(request, username):
         return redirect('profile', username=username)
     return redirect('profile', username=username)
 
-def following (request):
+def following(request):
     if request.user.is_authenticated:
         following_users = Follow.objects.filter(follower=request.user).values_list('following', flat=True)
         posts = Post.objects.filter(owner__in=following_users).order_by('-created_date')
@@ -137,3 +140,4 @@ def following (request):
         posts = []
     
     return render(request, 'network/following.html', {'posts': posts})
+
