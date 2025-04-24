@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -66,11 +67,11 @@ def register(request):
         return render(request, "network/register.html")
 
 def all_posts(request):
-    post_list = Post.objects.all().order_by('-created_date')  # Get all posts, ordered by most recent
+    post_list = Post.objects.all().order_by('-created_date')  # Get all posts, ordered by descending
     paginator = Paginator(post_list, 10)  # 10 posts per page
 
     page_number = request.GET.get('page')
-    posts = paginator.get_page(page_number)  # `posts` is now a Page object
+    posts = paginator.get_page(page_number)  
 
     return render(request, 'network/index.html', {'posts': posts})
 
@@ -141,3 +142,31 @@ def following(request):
     
     return render(request, 'network/following.html', {'posts': posts})
 
+@login_required
+def edit_post(request, post_id):
+    
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    try:
+        post = Post.objects.get(id=post_id)
+        
+        if post.owner != request.user:
+            return JsonResponse({"error": "Unauthorized"}, status=403)
+
+        data = json.loads(request.body)
+        content = data.get("content")
+
+        if not content:
+            return JsonResponse({"error": "Content required"}, status=400)
+
+        post.content = content
+        post.save()
+
+        return JsonResponse({
+            "success": True,
+            "updated_content": content
+        })
+
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Not found"}, status=404)
