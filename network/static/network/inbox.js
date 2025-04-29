@@ -72,7 +72,6 @@ function savePost(postId) {
 }
 
 function toggleLike(postId) {
-    const likeButton = document.querySelector(`#like-btn-${postId}`);
     const heartIcon = document.querySelector(`#heart-icon-${postId}`);
     const likeCountElement = document.querySelector(`#like-count-${postId}`);
 
