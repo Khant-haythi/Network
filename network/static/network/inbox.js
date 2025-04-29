@@ -19,12 +19,6 @@ function editPost(postId) {
     const postTextArea = document.querySelector(`#post-textarea-${postId}`);
     const editButton = document.querySelector(`#edit-post-btn-${postId}`);
 
-    // Check if elements exist
-    if (!postContent || !postTextArea || !editButton) {
-        console.error(`Missing elements: postContent=${!!postContent}, postTextArea=${!!postTextArea}, editButton=${!!editButton}`);
-        alert('Error: Post elements not found');
-        return;
-    }
 
     // Toggle between Edit and Save modes
     if (editButton.textContent === 'Edit') {
@@ -60,7 +54,6 @@ function savePost(postId) {
        return response.json();
     })
     .then(data => {
-             // Debug success response
             const postContent = document.querySelector(`#post-content-${postId}`);
             const postTextArea = document.querySelector(`#post-textarea-${postId}`);
             const editButton = document.querySelector(`#edit-post-btn-${postId}`);
@@ -78,14 +71,45 @@ function savePost(postId) {
     });
 }
 
-function getCSRFToken() {
-    const name = 'csrftoken';
-    const cookies = document.cookie.split(';');
-    for (let cookie of cookies) {
-        const [key, value] = cookie.trim().split('=');
-        if (key === name) {
-            return value;
+function toggleLike(postId) {
+    const likeButton = document.querySelector(`#like-btn-${postId}`);
+    const heartIcon = document.querySelector(`#heart-icon-${postId}`);
+    const likeCountElement = document.querySelector(`#like-count-${postId}`);
+
+    fetch(`/like_post/${postId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrfToken()
         }
-    }
-    return null;
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            likeCountElement.textContent = data.likes;
+            if (data.liked) {
+                heartIcon.classList.remove('fa-regular');
+                heartIcon.classList.add('fa-solid', 'text-success');
+            } else {
+                heartIcon.classList.remove('fa-solid', 'text-success');
+                heartIcon.classList.add('fa-regular');
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function getCsrfToken() {
+    const cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+    return cookieValue || '';
 }

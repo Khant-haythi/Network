@@ -170,3 +170,32 @@ def edit_post(request, post_id):
 
     except Post.DoesNotExist:
         return JsonResponse({"error": "Not found"}, status=404)
+    
+@login_required
+def like_post(request, post_id):
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    try:
+        post = Post.objects.get(id=post_id)
+        
+        if post.owner == request.user:
+            return JsonResponse({"error": "Cannot like your own post"}, status=403)
+
+        # Check if the user has already liked the post
+        if request.user in post.likes.all():
+            post.likes.remove(request.user)
+            liked = False
+        else:
+            post.likes.add(request.user)
+            liked = True
+
+        return JsonResponse({
+            "success": True,
+            "likes": post.likes.count(),
+            "liked": liked
+        })
+
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Not found"}, status=404)
+        
