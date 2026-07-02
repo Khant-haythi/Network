@@ -21,19 +21,34 @@ This project implements the following features, as demonstrated in the video dem
 *   **Database:** SQLite (Default Django DB)
 
 ## 🚀 How to Run the Project
-1. Clone this repository to your local machine.
-2. Navigate to the project directory in your terminal.
-3. Install the required dependencies (if you have a `requirements.txt`):
+
+1. **Clone the repository**
+
+2. **Navigate to the project directory**
+
+3. **Install dependencies**
+
    ```bash
    pip install -r requirements.txt
+   ```
 
-4. Make and apply database migrations:
-```bash
+4. **Apply database migrations**
+
+   ```bash
    python manage.py makemigrations
    python manage.py migrate
+   ```
 
-5. Run the development server:
-```bash
+5. **Start the development server**
+
+   ```bash
    python manage.py runserver
+   ```
 
-6. Open a web browser and navigate to http://127.0.0.1:8000/.
+6. **Open your browser**
+
+   Visit:
+
+   ```
+   http://127.0.0.1:8000/
+   ```
