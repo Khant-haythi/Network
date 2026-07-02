@@ -29,11 +29,11 @@ This project implements the following features, as demonstrated in the video dem
 
 4. Make and apply database migrations:
 ```bash
-python manage.py makemigrations
-python manage.py migrate
+   python manage.py makemigrations
+   python manage.py migrate
 
 5. Run the development server:
 ```bash
-python manage.py runserver
+   python manage.py runserver
 
 6. Open a web browser and navigate to http://127.0.0.1:8000/.
