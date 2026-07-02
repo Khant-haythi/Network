@@ -26,13 +26,14 @@ This project implements the following features, as demonstrated in the video dem
 3. Install the required dependencies (if you have a `requirements.txt`):
    ```bash
    pip install -r requirements.txt
-   Make and apply database migrations:
 
-Bash
+4. Make and apply database migrations:
+```bash
 python manage.py makemigrations
 python manage.py migrate
-Run the development server:
 
-Bash
+5. Run the development server:
+```bash
 python manage.py runserver
-Open a web browser and navigate to http://127.0.0.1:8000/.
+
+6. Open a web browser and navigate to http://127.0.0.1:8000/.
